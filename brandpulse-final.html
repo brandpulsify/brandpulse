@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brandpulse — Brand Health Audits</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0d0d0d;
+  --cream: #f5f0e8;
+  --warm: #ede8dc;
+  --gold: #c9a84c;
+  --rust: #c45c2e;
+  --sage: #4a5e4f;
+  --muted: #6b6558;
+  --border: #d8d0c0;
+  --surface: #faf7f2;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  font-weight: 300;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 3.5rem;
+  background: rgba(245,240,232,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: var(--ink);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.logo em { font-style: italic; color: var(--gold); }
+
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { color: var(--muted); text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+.nav-links a:hover { color: var(--ink); }
+
+.nav-cta {
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  padding: 0.6rem 1.4rem;
+  border-radius: 4px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.nav-cta:hover { background: var(--rust); }
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 5rem;
+  padding: 8rem 3.5rem 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+.hero-tag::before { content: ''; display: block; width: 24px; height: 1px; background: var(--gold); }
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 5vw, 4.8rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+}
+h1 em { font-style: italic; color: var(--rust); }
+
+.hero-sub {
+  font-size: 1rem;
+  color: var(--muted);
+  max-width: 420px;
+  line-height: 1.75;
+  margin-bottom: 2.25rem;
+}
+
+.actions { display: flex; gap: 0.75rem; align-items: center; }
+
+.btn {
+  padding: 0.875rem 2rem;
+  border-radius: 4px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-block;
+  border: 1.5px solid transparent;
+}
+
+.btn-dark { background: var(--ink); color: var(--cream); border-color: var(--ink); }
+.btn-dark:hover { background: var(--rust); border-color: var(--rust); }
+.btn-ghost { background: transparent; color: var(--ink); border-color: var(--border); }
+.btn-ghost:hover { border-color: var(--ink); }
+.btn-gold { background: var(--gold); color: var(--ink); border-color: var(--gold); font-weight: 600; }
+.btn-gold:hover { background: #d4b55a; }
+
+/* HERO CARD */
+.hero-card {
+  background: var(--ink);
+  border-radius: 16px;
+  padding: 2.25rem;
+  color: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 220px; height: 220px;
+  background: radial-gradient(circle, rgba(201,168,76,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.card-label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(201,168,76,0.8);
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+}
+
+.score-row { display: flex; align-items: flex-end; gap: 0.75rem; margin-bottom: 1.75rem; }
+
+.score-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 4.5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--gold);
+}
+
+.score-meta { padding-bottom: 0.4rem; }
+.score-company { font-size: 0.78rem; color: rgba(245,240,232,0.45); margin-bottom: 0.2rem; }
+.score-grade { font-size: 0.85rem; color: var(--gold); font-weight: 500; }
+
+.dim-bars { display: flex; flex-direction: column; gap: 0.55rem; }
+
+.dim-row { display: flex; align-items: center; gap: 0.75rem; font-size: 0.78rem; color: rgba(245,240,232,0.55); }
+.dim-name { width: 130px; flex-shrink: 0; }
+.dim-bar { flex: 1; height: 3px; background: rgba(255,255,255,0.08); border-radius: 100px; overflow: hidden; }
+.dim-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--gold), #e8c96a); animation: grow 1.4s ease forwards; transform-origin: left; }
+@keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.dim-val { font-size: 0.75rem; color: rgba(201,168,76,0.8); min-width: 24px; text-align: right; }
+
+.card-foot {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  font-size: 0.8rem;
+  color: rgba(245,240,232,0.35);
+}
+.card-foot span { color: var(--gold); cursor: pointer; }
+
+/* SECTIONS */
+.section { padding: 6rem 3.5rem; max-width: 1200px; margin: 0 auto; }
+.section-alt { background: var(--ink); color: var(--cream); padding: 6rem 3.5rem; }
+.section-alt-inner { max-width: 1200px; margin: 0 auto; }
+.section-warm { background: var(--warm); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 6rem 3.5rem; }
+.section-warm-inner { max-width: 1200px; margin: 0 auto; }
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.label::before { content: ''; display: block; width: 18px; height: 1px; background: var(--gold); }
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  letter-spacing: -0.025em;
+  line-height: 1.06;
+  margin-bottom: 1rem;
+}
+
+.sub { font-size: 0.96rem; color: var(--muted); max-width: 480px; line-height: 1.75; }
+.sub-light { color: rgba(245,240,232,0.45); }
+
+/* MISSION */
+.mission-quote {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  line-height: 1.3;
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+.mission-quote em { font-style: normal; color: var(--gold); }
+.mission-body { font-size: 0.92rem; color: rgba(245,240,232,0.45); max-width: 560px; margin: 1.75rem auto 0; text-align: center; line-height: 1.8; }
+
+/* AUDIT */
+.audit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; margin-top: 3rem; align-items: start; }
+
+.form-group { margin-bottom: 1rem; }
+label { display: block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 600; margin-bottom: 0.35rem; }
+
+input, textarea, select {
+  width: 100%;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, textarea:focus, select:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
+textarea { resize: vertical; min-height: 100px; }
+
+.audit-box {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  min-height: 400px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.empty-state {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center; color: var(--muted); gap: 0.6rem;
+}
+.empty-icon { font-size: 1.5rem; opacity: 0.35; }
+.empty-text { font-size: 0.85rem; }
+
+.spinner { width: 28px; height: 28px; border: 2px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.7s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.loading { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; color: var(--muted); font-size: 0.88rem; }
+
+.ring-wrap { text-align: center; margin-bottom: 1.25rem; }
+.ring-svg { transform: rotate(-90deg); display: block; margin: 0 auto; }
+
+.grade-pill { display: inline-block; padding: 0.25rem 0.9rem; border-radius: 100px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.4rem; }
+.g-excellent { background: rgba(74,94,79,0.1); color: var(--sage); }
+.g-good { background: rgba(201,168,76,0.12); color: #8a6e1a; }
+.g-needswork { background: rgba(196,92,46,0.1); color: var(--rust); }
+.g-critical { background: rgba(196,92,46,0.18); color: var(--rust); }
+
+.insight { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--gold); border-radius: 6px; padding: 0.875rem 1rem; margin: 1rem 0; font-size: 0.85rem; line-height: 1.65; color: var(--ink); }
+.insight-lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); font-weight: 600; margin-bottom: 0.3rem; }
+
+.locked-list { display: flex; flex-direction: column; gap: 0.4rem; margin: 0.75rem 0; }
+.locked-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.8rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.5rem 0.75rem; }
+.locked-bar { flex: 1; height: 4px; background: var(--border); border-radius: 100px; opacity: 0.5; }
+
+.issue-tag { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.2); border-radius: 6px; padding: 0.75rem 1rem; font-size: 0.83rem; color: var(--ink); margin-bottom: 1rem; }
+.issue-tag strong { color: var(--gold); }
+
+.cta-foot { margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
+.err { color: var(--rust); font-size: 0.8rem; margin-top: 0.4rem; }
+
+/* PRICING */
+.pricing-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; margin-top: 3rem; align-items: start; }
+
+.p-card { border: 1.5px solid var(--border); border-radius: 12px; padding: 2.25rem; background: var(--surface); position: relative; }
+.p-card.best { border-color: var(--gold); background: var(--ink); color: var(--cream); }
+
+.best-tag { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--ink); font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.9rem; border-radius: 0 0 6px 6px; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+
+.p-tier { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+.best .p-tier { color: rgba(245,240,232,0.4); }
+
+.p-price { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 2.8rem; letter-spacing: -0.03em; color: var(--ink); line-height: 1; margin-bottom: 0.2rem; }
+.best .p-price { color: var(--gold); }
+.p-price small { font-family: 'Outfit', sans-serif; font-size: 0.9rem; font-weight: 300; color: var(--muted); }
+.best .p-price small { color: rgba(245,240,232,0.4); }
+
+.p-save { display: inline-block; background: rgba(201,168,76,0.12); color: #8a6e1a; font-size: 0.7rem; padding: 0.18rem 0.6rem; border-radius: 100px; font-weight: 600; margin: 0.4rem 0 1rem; }
+.best .p-save { background: rgba(201,168,76,0.2); color: var(--gold); }
+.no-save { height: 1.6rem; }
+
+.p-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.75rem; line-height: 1.65; }
+.best .p-desc { color: rgba(245,240,232,0.45); }
+
+.p-features { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 2rem; }
+.p-features li { display: flex; align-items: flex-start; gap: 0.5rem; font-size: 0.84rem; color: var(--muted); }
+.best .p-features li { color: rgba(245,240,232,0.65); }
+.ck { color: var(--sage); font-weight: 700; flex-shrink: 0; }
+.best .ck { color: var(--gold); }
+.cx { color: var(--border); flex-shrink: 0; }
+
+.math-note { margin-top: 1.5rem; background: rgba(201,168,76,0.07); border: 1px solid rgba(201,168,76,0.2); border-radius: 8px; padding: 1rem 1.25rem; font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+.math-note strong { color: var(--ink); }
+
+/* TEAM */
+.team-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-top: 3rem; }
+
+.t-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 2rem; transition: border-color 0.3s; }
+.t-card:hover { border-color: rgba(201,168,76,0.35); }
+
+.t-avatar { width: 52px; height: 52px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.25rem; color: var(--ink); margin-bottom: 1rem; }
+
+.t-name { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.15rem; color: var(--cream); margin-bottom: 0.2rem; }
+.t-role { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--gold); font-weight: 600; margin-bottom: 0.875rem; }
+.t-bio { font-size: 0.86rem; color: rgba(245,240,232,0.45); line-height: 1.7; margin-bottom: 1rem; }
+.t-quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.87rem; color: rgba(245,240,232,0.28); border-left: 2px solid var(--gold); padding-left: 0.75rem; line-height: 1.6; }
+
+/* CTA */
+.cta-block { background: var(--rust); padding: 5rem 3.5rem; text-align: center; }
+.cta-block h2 { color: var(--cream); max-width: 520px; margin: 0.75rem auto 1rem; }
+.cta-block .sub { color: rgba(245,240,232,0.6); margin: 0 auto 2rem; }
+.btn-cream { background: var(--cream); color: var(--rust); border: none; padding: 0.9rem 2.25rem; border-radius: 4px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.92rem; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+.btn-cream:hover { background: var(--ink); color: var(--cream); }
+.btn-outline-cream { background: transparent; color: var(--cream); border: 1.5px solid rgba(245,240,232,0.35); padding: 0.9rem 2.25rem; border-radius: 4px; font-family: 'Outfit', sans-serif; font-weight: 400; font-size: 0.92rem; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; margin-left: 0.75rem; }
+.btn-outline-cream:hover { border-color: var(--cream); }
+
+/* FOOTER */
+footer { background: var(--ink); padding: 2rem 3.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.footer-logo { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.2rem; color: var(--cream); text-decoration: none; }
+.footer-logo em { font-style: italic; color: var(--gold); }
+footer span { font-size: 0.8rem; color: rgba(245,240,232,0.3); }
+footer a { font-size: 0.8rem; color: rgba(245,240,232,0.3); text-decoration: none; transition: color 0.2s; }
+footer a:hover { color: var(--cream); }
+
+/* MODAL */
+.modal-overlay { position: fixed; inset: 0; background: rgba(13,13,13,0.7); backdrop-filter: blur(10px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--cream); border-radius: 16px; padding: 2.5rem; max-width: 660px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+.modal-close { position: absolute; top: 1.25rem; right: 1.25rem; background: var(--warm); border: 1px solid var(--border); color: var(--muted); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.modal-close:hover { background: var(--ink); color: var(--cream); }
+.modal h2 { font-size: 1.75rem; margin: 0.5rem 0 0.4rem; }
+.modal .sub { margin-bottom: 1.75rem; font-size: 0.88rem; }
+.modal-plans { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+.m-plan { border: 1.5px solid var(--border); border-radius: 10px; padding: 1.5rem; background: var(--surface); position: relative; }
+.m-plan.rec { border-color: var(--gold); background: var(--ink); color: var(--cream); }
+.m-rec-tag { position: absolute; top: -1px; left: 50%; transform: translateX(-50%); background: var(--gold); color: var(--ink); font-size: 0.62rem; font-weight: 700; padding: 0.18rem 0.8rem; border-radius: 0 0 6px 6px; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
+.m-plan .p-tier { margin-top: 0.6rem; }
+.m-plan .p-price { font-size: 2rem; }
+.modal-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+.modal-note { font-size: 0.75rem; color: var(--muted); text-align: center; }
+
+/* CHATBOT */
+.chat-bubble {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 60px;
+  height: 60px;
+  background: var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(201,168,76,0.3);
+  transition: all 0.2s;
+  z-index: 200;
+  font-size: 1.5rem;
+}
+
+.chat-bubble:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(201,168,76,0.4);
+}
+
+.chatbot-window {
+  position: fixed;
+  bottom: 6rem;
+  right: 2rem;
+  width: 380px;
+  max-height: 600px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  display: none;
+  flex-direction: column;
+  z-index: 200;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+}
+
+.chatbot-window.open { display: flex; }
+
+.chat-header {
+  background: var(--ink);
+  color: var(--cream);
+  padding: 1.25rem;
+  border-radius: 16px 16px 0 0;
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.05rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-close {
+  background: none;
+  border: none;
+  color: var(--cream);
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.msg {
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  max-width: 85%;
+}
+
+.msg-bot {
+  background: var(--surface);
+  color: var(--ink);
+  align-self: flex-start;
+  border: 1px solid var(--border);
+}
+
+.msg-user {
+  background: var(--ink);
+  color: var(--cream);
+  align-self: flex-end;
+}
+
+.chat-input-area {
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.chat-input {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.65rem 0.875rem;
+  color: var(--ink);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.85rem;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.chat-send {
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  padding: 0.65rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.chat-send:hover { background: var(--rust); }
+
+/* FADE */
+.fade { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+.fade.on { opacity: 1; transform: none; }
+
+/* RESPONSIVE */
+@media (max-width: 860px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero, .audit-grid, .pricing-row, .team-row { grid-template-columns: 1fr; }
+  .hero { padding: 7rem 1.5rem 3.5rem; gap: 3rem; min-height: auto; }
+  .hero-card { display: none; }
+  .section, .section-warm { padding: 4.5rem 1.5rem; }
+  .section-alt { padding: 4.5rem 1.5rem; }
+  .cta-block { padding: 4rem 1.5rem; }
+  footer { padding: 1.75rem 1.5rem; }
+  .modal-plans, .modal-btns { grid-template-columns: 1fr; }
+  .chatbot-window { width: calc(100% - 2rem); right: 1rem; bottom: 5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#">Brand<em>pulse</em></a>
+  <ul class="nav-links">
+    <li><a href="#audit">Free Audit</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#team">Team</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">Free Score</button>
+</nav>
+
+<!-- HERO -->
+<div style="max-width:1200px; margin:0 auto;">
+  <div class="hero">
+    <div>
+      <div class="hero-tag">AI Brand Intelligence</div>
+      <h1>Your brand is<br><em>losing you</em><br>real money.</h1>
+      <p class="hero-sub">Mid-size companies bleed trust every day because their brand contradicts itself. We find every crack — and seal them.</p>
+      <div class="actions">
+        <a href="#audit" class="btn btn-dark">Get Free Score →</a>
+        <a href="#pricing" class="btn btn-ghost">See Pricing</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="card-label">Sample Audit — Acme Corp</div>
+      <div class="score-row">
+        <div class="score-num">61</div>
+        <div class="score-meta">
+          <div class="score-company">Brand Health Score</div>
+          <div class="score-grade">Needs Work</div>
+        </div>
+      </div>
+      <div class="dim-bars">
+        <div class="dim-row"><div class="dim-name">Voice & Tone</div><div class="dim-bar"><div class="dim-fill" style="width:72%"></div></div><div class="dim-val">72</div></div>
+        <div class="dim-row"><div class="dim-name">Visual Identity</div><div class="dim-bar"><div class="dim-fill" style="width:55%"></div></div><div class="dim-val">55</div></div>
+        <div class="dim-row"><div class="dim-name">Messaging Clarity</div><div class="dim-bar"><div class="dim-fill" style="width:48%"></div></div><div class="dim-val">48</div></div>
+        <div class="dim-row"><div class="dim-name">Channel Alignment</div><div class="dim-bar"><div class="dim-fill" style="width:63%"></div></div><div class="dim-val">63</div></div>
+        <div class="dim-row"><div class="dim-name">Competitive Position</div><div class="dim-bar"><div class="dim-fill" style="width:66%"></div></div><div class="dim-val">66</div></div>
+      </div>
+      <div class="card-foot">What does your score look like? <span onclick="document.getElementById('audit').scrollIntoView({behavior:'smooth'})">Run your free audit →</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- MISSION -->
+<div class="section-alt">
+  <div class="section-alt-inner" style="text-align:center;">
+    <div class="label" style="justify-content:center;">Our Mission</div>
+    <p class="mission-quote">"We exist to make every company <em>impossible to misread</em> — because clarity isn't aesthetics, it's revenue."</p>
+    <p class="mission-body">Brandpulse combines AI analysis with human creative strategy so mid-size companies can finally see their brand the way their buyers do — and fix what's costing them deals.</p>
+  </div>
+</div>
+
+<!-- FREE AUDIT -->
+<div class="section-warm" id="audit">
+  <div class="section-warm-inner">
+    <div class="fade">
+      <div class="label">Try It Free</div>
+      <h2>Get your Brand Health Score</h2>
+      <p class="sub" style="margin-bottom:0;">Paste your marketing copy and see your score in under 60 seconds. Full breakdown requires a plan.</p>
+    </div>
+    <div class="audit-grid fade">
+      <div>
+        <div class="form-group">
+          <label>Company Name</label>
+          <input type="text" id="co" placeholder="e.g. Acme Corp" />
+        </div>
+        <div class="form-group">
+          <label>Industry</label>
+          <select id="ind">
+            <option value="">Select industry</option>
+            <option>SaaS / Technology</option>
+            <option>Professional Services</option>
+            <option>Healthcare</option>
+            <option>E-commerce / Retail</option>
+            <option>Financial Services</option>
+            <option>Manufacturing</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Paste marketing copy</label>
+          <textarea id="copy" placeholder="Homepage headline, social posts, emails — any marketing text works..."></textarea>
+        </div>
+        <button class="btn btn-dark" id="runBtn" onclick="runAudit()" style="width:100%; padding:0.875rem;">Analyze My Brand →</button>
+        <div class="err" id="err"></div>
+        <p style="font-size:0.75rem; color:var(--muted); margin-top:0.6rem; text-align:center;">No sign-up. No credit card. Full breakdown unlocked with Pro.</p>
+      </div>
+      <div class="audit-box" id="auditBox">
+        <div class="empty-state" id="emptyState">
+          <div class="empty-icon">✦</div>
+          <div class="empty-text" style="font-family:'Playfair Display',serif; font-weight:900; color:var(--ink); font-size:0.95rem;">Your score appears here</div>
+          <div class="empty-text">Fill in your details and hit Analyze</div>
+        </div>
+        <div id="resultContent" style="display:none; flex-direction:column; height:100%;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="section" id="pricing">
+  <div class="fade">
+    <div class="label">Pricing</div>
+    <h2>Start free. Go deep<br>when you're ready.</h2>
+  </div>
+  <div class="pricing-row fade">
+    <div class="p-card">
+      <div class="p-tier">Free</div>
+      <div class="p-price">$0</div>
+      <div class="no-save"></div>
+      <div class="p-desc">Overall score, instant result. See where you stand before you commit.</div>
+      <ul class="p-features">
+        <li><span class="ck">✓</span> Overall brand score (0–100)</li>
+        <li><span class="ck">✓</span> Single AI insight</li>
+        <li><span class="ck">✓</span> No account needed</li>
+        <li><span class="cx">✗</span> <span style="opacity:0.4;">5-dimension breakdown</span></li>
+        <li><span class="cx">✗</span> <span style="opacity:0.4;">Priority fixes</span></li>
+        <li><span class="cx">✗</span> <span style="opacity:0.4;">Strategy session</span></li>
+      </ul>
+      <a href="#audit" class="btn btn-ghost" style="width:100%; text-align:center; display:block;">Try Free →</a>
+    </div>
+    <div class="p-card">
+      <div class="p-tier">One-Time Report</div>
+      <div class="p-price">$997</div>
+      <div class="no-save"></div>
+      <div class="p-desc">One deep-dive audit. Good for a snapshot — not a sustained edge.</div>
+      <ul class="p-features">
+        <li><span class="ck">✓</span> Full 5-dimension audit</li>
+        <li><span class="ck">✓</span> Brand Health Report PDF</li>
+        <li><span class="ck">✓</span> Top 3 priority fixes</li>
+        <li><span class="cx">✗</span> <span style="opacity:0.4;">Strategy session</span></li>
+        <li><span class="cx">✗</span> <span style="opacity:0.4;">Monthly re-audits</span></li>
+        <li><span class="cx">✗</span> <span style="opacity:0.4;">Competitor analysis</span></li>
+      </ul>
+      <button class="btn btn-ghost" style="width:100%;" onclick="initializeCheckout('onetime', '$997')">Get One Report</button>
+    </div>
+    <div class="p-card best">
+      <div class="best-tag">⚡ Best Value</div>
+      <div class="p-tier" style="margin-top:0.75rem;">Pro Subscription</div>
+      <div class="p-price">$197 <small>/mo</small></div>
+      <div class="p-save">Save $800 vs one-time on day one</div>
+      <div class="p-desc">Everything, every month. More value immediately than the $997 report — and it compounds.</div>
+      <ul class="p-features">
+        <li><span class="ck">✓</span> Unlimited audits</li>
+        <li><span class="ck">✓</span> Full 5-dimension breakdown</li>
+        <li><span class="ck">✓</span> All priority fixes & quick wins</li>
+        <li><span class="ck">✓</span> <strong style="color:var(--cream);">90-min strategy session</strong></li>
+        <li><span class="ck">✓</span> <strong style="color:var(--cream);">Monthly re-audits</strong></li>
+        <li><span class="ck">✓</span> <strong style="color:var(--cream);">Direct founder access</strong></li>
+      </ul>
+      <button class="btn-gold btn" style="width:100%;" onclick="initializeCheckout('pro', '$197/mo')">Get Pro — $197/mo →</button>
+      <p style="font-size:0.72rem; color:rgba(245,240,232,0.3); text-align:center; margin-top:0.6rem;">Cancel anytime · Strategy call within 48hrs</p>
+    </div>
+  </div>
+  <div class="math-note fade">
+    <strong>The math is obvious.</strong> The $997 one-time gives you a single snapshot with no follow-up. Pro at $197/mo includes a strategy session, unlimited audits, and monthly tracking — 5× more value for 80% less on day one.
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="section-alt" id="team">
+  <div class="section-alt-inner">
+    <div class="fade">
+      <div class="label">The Team</div>
+      <h2 style="color:var(--cream);">Two founders.<br>One focused mission.</h2>
+      <p class="sub sub-light">No junior staff. Every client works directly with Brady and Holden.</p>
+    </div>
+    <div class="team-row fade">
+      <div class="t-card">
+        <div class="t-avatar" style="background:linear-gradient(135deg,var(--gold),#e8c96a);">B</div>
+        <div class="t-name">Brady</div>
+        <div class="t-role">Co-Founder & CEO — Growth & Client Strategy</div>
+        <p class="t-bio">Brady leads every client relationship, sales strategy, and growth initiative at Brandpulse. With a background in marketing and sales, he built Brandpulse because he kept watching great companies lose deals to brands that were simply clearer. He leads every discovery call and owns the go-to-market strategy.</p>
+        <div class="t-quote">"Brand consistency isn't soft. It's the sharpest growth lever most companies ignore."</div>
+      </div>
+      <div class="t-card">
+        <div class="t-avatar" style="background:linear-gradient(135deg,var(--rust),#e07a50);">H</div>
+        <div class="t-name">Holden</div>
+        <div class="t-role">Co-Founder & CCO — Creative Direction & Brand Systems</div>
+        <p class="t-bio">Holden is the creative and design mind behind Brandpulse — responsible for every audit framework and visual system we produce. Where Brady finds the business problems, Holden uncovers the creative ones. He built the 5-Dimension audit methodology and leads every Pro strategy session alongside Brady.</p>
+        <div class="t-quote">"When we audit a company, we're not scoring their assets — we're diagnosing how they think about themselves."</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-block">
+  <div class="label" style="justify-content:center; color:rgba(245,240,232,0.5);">Ready?</div>
+  <h2>Stop losing deals to<br>a brand that contradicts itself</h2>
+  <p class="sub" style="color:rgba(245,240,232,0.6); margin:0 auto 2rem;">Free score in 60 seconds. No sign-up. No credit card.</p>
+  <a href="#audit" class="btn-cream">Get Free Brand Score →</a>
+  <a href="javascript:openChatbot()" class="btn-outline-cream">Questions? Ask our AI</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a class="footer-logo" href="#">Brand<em>pulse</em></a>
+  <span>© 2025 Brandpulse</span>
+  <a href="javascript:openChatbot()">Questions?</a>
+</footer>
+
+<!-- CHATBOT -->
+<div class="chatbot-window" id="chatbot">
+  <div class="chat-header">
+    <span>Brand Expert</span>
+    <button class="chat-close" onclick="closeChatbot()">✕</button>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="msg msg-bot">Hey there! 👋 I'm the Brandpulse AI assistant. Ask me anything about our audits, pricing, features, or how we can help your brand. What questions do you have?</div>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" class="chat-input" id="chatInput" placeholder="Type your question..." onkeypress="handleChatKeypress(event)" />
+    <button class="chat-send" onclick="sendChatMessage()">Send</button>
+  </div>
+</div>
+
+<div class="chat-bubble" id="chatBubble" onclick="openChatbot()">💬</div>
+
+<!-- MODAL (for checkout) -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="label">Secure Checkout</div>
+    <h2 id="checkoutTitle">Choose your plan</h2>
+    <p class="sub" id="checkoutDesc">Complete your purchase to get instant access to all Pro features and your strategy session.</p>
+    
+    <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.5rem; margin-bottom:1.5rem;">
+      <div style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); font-weight:600; margin-bottom:0.5rem;">Order Summary</div>
+      <div style="font-family:'Playfair Display',serif; font-weight:900; font-size:1.5rem; color:var(--ink); margin-bottom:0.75rem;" id="checkoutPrice">$197/mo</div>
+      <div style="font-size:0.85rem; color:var(--muted); line-height:1.6; margin-bottom:1rem;" id="checkoutFeatures">
+        <div>✓ Unlimited audits</div>
+        <div>✓ 90-min strategy session</div>
+        <div>✓ Monthly re-audits</div>
+        <div>✓ Direct founder access</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Email Address</label>
+      <input type="email" id="checkoutEmail" placeholder="you@company.com" />
+    </div>
+
+    <div class="form-group">
+      <label>Company Name</label>
+      <input type="text" id="checkoutCompany" placeholder="Your Company" />
+    </div>
+
+    <button class="btn btn-dark" style="width:100%; padding:1rem; margin-bottom:0.75rem;" id="checkoutBtn" onclick="processCheckout()">Complete Purchase →</button>
+    <p style="font-size:0.75rem; color:var(--muted); text-align:center;">Secure payment processing. 48-hour onboarding. Cancel anytime.</p>
+  </div>
+</div>
+
+<script>
+// Scroll fade
+const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }), { threshold: 0.08 });
+document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+
+// CHATBOT
+function openChatbot() { document.getElementById('chatbot').classList.add('open'); document.getElementById('chatBubble').style.display = 'none'; }
+function closeChatbot() { document.getElementById('chatbot').classList.remove('open'); document.getElementById('chatBubble').style.display = 'flex'; }
+
+const CHATBOT_RESPONSES = {
+  'pricing': 'We have three options: Free (just a score), $997 one-time for a complete audit, and $197/mo for Pro which includes unlimited audits, a 90-min strategy session, monthly re-audits, and direct access to Brady and Holden. Most clients find Pro is 5x more valuable than the one-time report.',
+  'audit': 'Our audit scores your brand across 5 dimensions: Voice & Tone, Visual Identity, Messaging Clarity, Channel Alignment, and Competitive Positioning. You get an instant overall score, and with Pro you unlock the full breakdown plus priority fixes.',
+  'strategy session': 'All Pro subscribers get a 90-minute strategy session with Brady and Holden (no junior staff). We walk through your audit results and hand you a concrete action plan. Sessions are booked within 48 hours of signup.',
+  'payment': 'After you complete your purchase, you get instant access to all Pro features. No waiting, no onboarding delays. You can start running unlimited audits immediately.',
+  'access': 'Once you subscribe to Pro, you get immediate access to the full audit tool. You can run as many audits as you want, see all 5-dimension breakdowns, and book your strategy session right away.',
+  'refund': 'Pro is month-to-month and can be cancelled anytime with no penalty. We want you to love it, so if you\'re not getting value, just let us know.',
+  'free': 'The free tier gives you an overall brand health score instantly. No account needed. With Pro, you unlock the full 5-dimension breakdown, priority fixes, and the strategy session.',
+  'holden': 'Holden is our Co-Founder & Chief Creative Officer. He built the 5-Dimension audit framework and creative vision behind Brandpulse. He leads all Pro strategy sessions alongside Brady.',
+  'brady': 'Brady is our Co-Founder & CEO. He handles growth, client relationships, and strategy. He leads all discovery calls and strategy sessions with Pro clients.',
+  'dimensions': 'We audit 5 key areas: 1) Voice & Tone - does your copy sound like one company? 2) Visual Identity - are colors and fonts consistent? 3) Messaging Clarity - is your value prop clear? 4) Channel Alignment - do all channels tell the same story? 5) Competitive Positioning - do you stand out?',
+  'default': 'That\'s a great question! For specific details, feel free to email hello@brandpulse.co and Brady or Holden will get back to you within 24 hours. Or would you like me to help with something else?'
+};
+
+function getChatbotResponse(question) {
+  const q = question.toLowerCase();
+  for (let key in CHATBOT_RESPONSES) {
+    if (q.includes(key)) return CHATBOT_RESPONSES[key];
+  }
+  return CHATBOT_RESPONSES['default'];
+}
+
+function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  const messagesDiv = document.getElementById('chatMessages');
+  const userMsg = document.createElement('div');
+  userMsg.className = 'msg msg-user';
+  userMsg.textContent = msg;
+  messagesDiv.appendChild(userMsg);
+  input.value = '';
+
+  setTimeout(() => {
+    const botMsg = document.createElement('div');
+    botMsg.className = 'msg msg-bot';
+    botMsg.textContent = getChatbotResponse(msg);
+    messagesDiv.appendChild(botMsg);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }, 500);
+
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function handleChatKeypress(e) {
+  if (e.key === 'Enter') sendChatMessage();
+}
+
+// MODAL & CHECKOUT
+function initializeCheckout(plan, price) {
+  document.getElementById('checkoutTitle').textContent = plan === 'pro' ? 'Get Pro — $197/mo' : 'One-Time Report — $997';
+  document.getElementById('checkoutDesc').textContent = plan === 'pro' 
+    ? 'Get unlimited audits, strategy sessions, and monthly tracking. Full access unlocked immediately after payment.'
+    : 'Get one complete 5-dimension audit with a detailed report. Instant access after payment.';
+  document.getElementById('checkoutPrice').textContent = price;
+  document.getElementById('checkoutPrice').dataset.plan = plan;
+  
+  if (plan === 'pro') {
+    document.getElementById('checkoutFeatures').innerHTML = '<div>✓ Unlimited audits</div><div>✓ Full 5-dimension breakdown</div><div>✓ 90-min strategy session (booked within 48hrs)</div><div>✓ Monthly re-audits</div><div>✓ Direct founder access</div>';
+  } else {
+    document.getElementById('checkoutFeatures').innerHTML = '<div>✓ Full 5-dimension audit</div><div>✓ Brand Health Report PDF</div><div>✓ Top 3 priority fixes</div><div>✓ Instant access</div>';
+  }
+  
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+async function processCheckout() {
+  const email = document.getElementById('checkoutEmail').value.trim();
+  const company = document.getElementById('checkoutCompany').value.trim();
+  const price = document.getElementById('checkoutPrice').textContent;
+  const plan = document.getElementById('checkoutPrice').dataset.plan;
+
+  if (!email || !company) {
+    alert('Please fill in all fields');
+    return;
+  }
+
+  const btn = document.getElementById('checkoutBtn');
+  btn.disabled = true;
+  btn.textContent = 'Processing...';
+
+  // Send email to Brady
+  const mailtoLink = `mailto:bradybauer0427@gmail.com?subject=New ${plan === 'pro' ? 'Pro Subscription' : 'One-Time Audit'} Purchase&body=
+Customer Email: ${email}
+Company: ${company}
+Plan: ${plan === 'pro' ? 'Pro Subscription ($197/mo)' : 'One-Time Report ($997)'}
+Date: ${new Date().toLocaleString()}
+
+${email} has completed a purchase and requires onboarding. 
+
+Pro customers get immediate access to unlimited audits and should book their 90-min strategy session within 24 hours.
+
+One-time audit customers get instant access to run their audit and receive their full report within 48 hours.`;
+
+  // Also send confirmation to customer
+  const customerMailto = `mailto:${email}?subject=Welcome to Brandpulse! - Your Purchase is Confirmed&body=
+Hi there,
+
+Thank you for choosing Brandpulse! Your purchase is confirmed.
+
+Plan: ${plan === 'pro' ? 'Pro Subscription ($197/month)' : 'One-Time Audit Report ($997)'}
+Company: ${company}
+
+INSTANT ACCESS GRANTED ✓
+
+Your ${plan === 'pro' ? 'Pro' : 'audit'} account is ready to use right now. ${plan === 'pro' ? 'You can start running unlimited audits immediately. A member of our team will reach out within 24 hours to schedule your 90-min strategy session.' : 'Run your audit now and receive your full report within 48 hours.'}
+
+Questions? Reply to this email or reach out directly.
+
+Best,
+Brady & Holden
+Brandpulse`;
+
+  // Simulate the email sending
+  window.location.href = mailtoLink;
+  setTimeout(() => {
+    window.location.href = customerMailto;
+  }, 1000);
+
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.textContent = 'Complete Purchase →';
+    alert(`Welcome to Brandpulse! 🎉\n\nYour ${plan === 'pro' ? 'Pro subscription' : 'audit purchase'} is confirmed.\n\nYou now have instant access to all features. Brady & Holden will be in touch shortly.\n\nEmail sent to: ${email}`);
+    closeModal();
+  }, 2000);
+}
+
+// FREE AUDIT
+async function runAudit() {
+  const co = document.getElementById('co').value.trim();
+  const ind = document.getElementById('ind').value;
+  const copy = document.getElementById('copy').value.trim();
+  const err = document.getElementById('err');
+  err.textContent = '';
+
+  if (!co || !copy) { err.textContent = 'Please enter your company name and some marketing copy.'; return; }
+
+  const btn = document.getElementById('runBtn');
+  btn.disabled = true; btn.textContent = 'Analyzing...';
+  document.getElementById('emptyState').style.display = 'none';
+  const rc = document.getElementById('resultContent');
+  rc.style.display = 'flex';
+  rc.innerHTML = `<div class="loading"><div class="spinner"></div><div>Scanning your brand...</div></div>`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 400,
+        messages: [{ role: "user", content: `You are a senior brand strategist. Analyze this company's brand from the copy.
+Company: ${co}
+Industry: ${ind || 'Not specified'}
+Copy: "${copy}"
+Return ONLY valid JSON, no markdown:
+{"overallScore":<0-100>,"overallGrade":"<Excellent|Good|Needs Work|Critical>","teaserInsight":"<2 specific sentences that make them want more>","topIssueTeaser":"<just a short label like 'Messaging clarity'>"}` }]
+      })
+    });
+    const data = await res.json();
+    const r = JSON.parse(data.content.map(i=>i.text||'').join('').replace(/```json|```/g,'').trim());
+    renderResult(r, co);
+  } catch {
+    rc.innerHTML = `<div class="loading" style="color:var(--rust);">⚠️ Something went wrong. Please try again.</div>`;
+  } finally {
+    btn.disabled = false; btn.textContent = 'Analyze My Brand →';
+  }
+}
+
+function col(s) { return s>=75?'var(--sage)':s>=50?'var(--gold)':'var(--rust)'; }
+function gc(g) { return {Excellent:'g-excellent',Good:'g-good','Needs Work':'g-needswork',Critical:'g-critical'}[g]||'g-needswork'; }
+
+function renderResult(r, co) {
+  const rc = document.getElementById('resultContent');
+  const C = 2*Math.PI*42;
+  const off = C-(r.overallScore/100)*C;
+  const c = col(r.overallScore);
+  rc.innerHTML = `
+    <div class="ring-wrap">
+      <svg class="ring-svg" width="110" height="110" viewBox="0 0 110 110">
+        <circle cx="55" cy="55" r="42" fill="none" stroke="var(--border)" stroke-width="8"/>
+        <circle cx="55" cy="55" r="42" fill="none" stroke="${c}" stroke-width="8" stroke-linecap="round"
+          stroke-dasharray="${C}" stroke-dashoffset="${off}" style="transition:stroke-dashoffset 1s ease;"/>
+        <text x="55" y="60" text-anchor="middle" font-family="Playfair Display,serif" font-weight="900" font-size="22" fill="var(--ink)">${r.overallScore}</text>
+      </svg>
+      <div style="font-family:'Playfair Display',serif;font-weight:900;font-size:0.9rem;color:var(--ink);margin-top:0.4rem;">${co}</div>
+      <div class="grade-pill ${gc(r.overallGrade)}">${r.overallGrade}</div>
+    </div>
+    <div class="insight">
+      <div class="insight-lbl">AI Insight</div>
+      ${r.teaserInsight}
+    </div>
+    <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);font-weight:600;margin-bottom:0.4rem;">5-Dimension Breakdown 🔒</div>
+    <div class="locked-list">
+      ${['Voice & Tone','Visual Identity','Messaging Clarity','Channel Alignment','Competitive Position'].map(d=>`
+        <div class="locked-row"><span style="min-width:120px;font-size:0.8rem;">${d}</span><div class="locked-bar"></div><span style="font-size:0.8rem;">🔒</span></div>`).join('')}
+    </div>
+    <div class="issue-tag"><strong>Top issue detected:</strong> ${r.topIssueTeaser} <span style="color:var(--muted);font-size:0.78rem;">— locked</span></div>
+    <div class="cta-foot">
+      <button class="btn-gold btn" style="width:100%;" onclick="initializeCheckout('pro', '$197/mo')">Unlock Full Report →</button>
+      <p style="font-size:0.72rem;color:var(--muted);text-align:center;margin-top:0.4rem;">Pro from $197/mo · Cancel anytime</p>
+    </div>`;
+}
+</script>
+</body>
+</html>
